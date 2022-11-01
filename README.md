@@ -1,2 +1,4 @@
-# ppp
-PPP is a prototype data validation tool for plastic packaging
+# PPP (Plastic Packaging Portal)
+PPP is a prototype data validation tool for plastic packaging. It has been developed as part of the Plastics Packaging Portals (PPP) Project, an [Innovate UK](https://www.ukri.org/councils/innovate-uk/) supported project under the [Smart Sustainable Plastic Packaging (SSPP) Fund](https://www.ukri.org/what-we-offer/our-main-funds/industrial-strategy-challenge-fund/clean-growth/smart-sustainable-plastic-packaging-challenge/). The project is led by [OPRL[(https://google.com/search?q=OPRL) alongside project partners [Open Data Manchester](https://www.opendatamanchester.org.uk), [Dsposal](https://dsposal.uk), [RECOUP](https://www.recoup.org), and [Ecosurety](https://www.ecosurety.com).
+
+The project brings together stakeholders from the entire plastic packaging ecosystem to explore how we might create the foundations for systemic change in the packaging value chain. We have had more than 80 individuals from over 40 organisations take part in our workshops, interviews and research and we are incredibly grateful to them for sharing their time, expertise and support.
