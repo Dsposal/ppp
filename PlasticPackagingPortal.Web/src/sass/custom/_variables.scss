@@ -1,0 +1,32 @@
+
+$font-sizes: ( "xs": $font-size-xs, "sm": $font-size-sm, "md": $font-size-md, "lg": $font-size-lg, "xl": $font-size-xl, "xxl": $font-size-xxl, );
+
+$extended-colors: map-merge( $theme-colors, ( "white": $white, "body": $body-color, "muted": $text-muted, "black-50": rgba($black, 0.5), "white-50": rgba($white, 0.5), "reset": inherit, ) );
+
+$svg-strokes: ( 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, );
+
+// Choices
+$choices-font-size-lg: $input-font-size-lg;
+$choices-font-size-md: $input-font-size;
+$choices-font-size-sm: $input-font-size-sm;
+
+$choices-guttering: $spacer;
+$choices-border-radius: $input-border-radius;
+$choices-border-radius-item: $border-radius-sm;
+
+$choices-bg-color: $form-select-bg;
+$choices-bg-color-disabled: $form-select-disabled-color;
+$choices-bg-color-dropdown: $form-select-bg;
+
+$choices-text-color: $body-color;
+$choices-keyline-color: $form-select-border-color;
+$choices-primary-color: $primary;
+$choices-disabled-color: $text-muted;
+
+$choices-highlight-color: $primary;
+
+// $choices-button-dimension: 8px !default;
+// $choices-button-offset: 8px !default;
+// $choices-icon-cross: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjEiIHZpZXdCb3g9IjAgMCAyMSAyMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0yLjU5Mi4wNDRsMTguMzY0IDE4LjM2NC0yLjU0OCAyLjU0OEwuMDQ0IDIuNTkyeiIvPjxwYXRoIGQ9Ik0wIDE4LjM2NEwxOC4zNjQgMGwyLjU0OCAyLjU0OEwyLjU0OCAyMC45MTJ6Ii8+PC9nPjwvc3ZnPg==") !default;
+// $choices-icon-cross-inverse: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjEiIHZpZXdCb3g9IjAgMCAyMSAyMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjMDAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0yLjU5Mi4wNDRsMTguMzY0IDE4LjM2NC0yLjU0OCAyLjU0OEwuMDQ0IDIuNTkyeiIvPjxwYXRoIGQ9Ik0wIDE4LjM2NEwxOC4zNjQgMGwyLjU0OCAyLjU0OEwyLjU0OCAyMC45MTJ6Ii8+PC9nPjwvc3ZnPg==") !default;
+// $choices-z-index: 1;

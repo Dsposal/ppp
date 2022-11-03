@@ -1,0 +1,60 @@
+.preloader > svg {
+    width: 50px;
+    height: 50px;
+
+    & > * {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: square;
+        stroke-miterlimit: 10;
+        stroke-width: 13.44px;
+    }
+}
+
+.svg-icon {
+    width: $font-size-base;
+    height: $font-size-base;
+
+    fill: currentColor;
+    stroke: currentColor;
+}
+.svg-icon {
+    pointer-events: none;
+}
+
+@each $size, $value in $font-sizes {
+    .svg-icon-#{$size} {
+        width: $value;
+        height: $value;
+    }
+}
+
+@each $color,
+    $value
+        in map-merge(
+            $extended-colors,
+            (
+                "none": none,
+                "current": currentColor,
+            )
+        )
+{
+    .svg-#{$color} {
+        fill: $value;
+        stroke: $value;
+    }
+
+    .svg-fill-#{$color} {
+        fill: $value !important;
+    }
+
+    .svg-stroke-#{$color} {
+        stroke: $value !important;
+    }
+}
+
+@each $num, $val in $svg-strokes {
+    .stroke-width-#{$num} {
+        stroke-width: $val;
+    }
+}
