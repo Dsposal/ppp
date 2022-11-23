@@ -54,7 +54,7 @@ namespace PlasticPackagingPortal.Web.Models.Data
 
         public DateTime UpdateDate { get; set; }
         public DateTime ReleaseDate { get; set; }
-        public DateTime? DiscontinuedDate { get; set; }
+        public DateTime? DiscontinueDate { get; set; }
 
         public DateTime SystemCreatedDate { get; set; }
         public DateTime SystemUpdatedDate { get; set; }

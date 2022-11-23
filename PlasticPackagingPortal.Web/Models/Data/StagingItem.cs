@@ -39,7 +39,7 @@ namespace PlasticPackagingPortal.Web.Models.Data
         public string? Shape { get; set; }
         public string? Flexibility { get; set; }
         public string? ComponentRecyclingDisruptors { get; set; }
-        public string? Colours { get; set; }
+        public string? Colour { get; set; }
         public string? Opacity { get; set; }
         public string? Level { get; set; }
         public string? ReuseSystem { get; set; }
@@ -54,7 +54,7 @@ namespace PlasticPackagingPortal.Web.Models.Data
 
         public string? UpdateDate { get; set; }
         public string? ReleaseDate { get; set; }
-        public string? DiscontinuedDate { get; set; }
+        public string? DiscontinueDate { get; set; }
 
         public DateTime SystemCreatedDate { get; set; }
         public DateTime SystemUpdatedDate { get; set; }

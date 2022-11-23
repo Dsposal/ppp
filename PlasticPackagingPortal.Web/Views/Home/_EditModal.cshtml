@@ -1,0 +1,162 @@
+﻿@model PlasticPackagingPortal.Web.Models.Dto.StagingItemDto
+
+
+<div class="modal fade" id="editRowModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editRowModal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-md-down modal-dialog-centered">
+        <div class="modal-content">
+            <form id="editRowForm" asp-action="UpdateStagingItem"asp-controller="Home" asp-antiforgery="true" method="post" role="form" data-get="@Url.Action("OnFormLoad", "Home")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input asp-for="Id" type="hidden"/>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Identifier" class="form-control" placeholder="optional">
+                        <label asp-for="Identifier"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" class="form-control" placeholder="required" required>
+                        <label asp-for="Name"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Description" class="form-control" placeholder="optional">
+                        <label asp-for="Description"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ImageUrl" class="form-control" placeholder="optional">
+                        <label asp-for="ImageUrl"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="LowCode" class="form-control" placeholder="optional">
+                        <label asp-for="LowCode"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Height" class="form-control" placeholder="optional">
+                        <label asp-for="Height"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="HeightDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="HeightDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Width" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Width"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="WidthDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="WidthDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Depth" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Depth"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="DepthDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="DepthDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Volume" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Volume"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="VolumeDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="VolumeDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Weight" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Weight"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="WeightDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="WeightDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="WeightTolerance" class="form-control" placeholder="optional">
+                        <label asp-for="WeightTolerance"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Function" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Function"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Shape" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Shape"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Flexibility" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Flexibility"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ComponentRecyclingDisruptors" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="ComponentRecyclingDisruptors"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Colour" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Colour"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Opacity" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Opacity"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Level" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Level"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ReuseSystem" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="ReuseSystem"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ManufacturedCountry" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="ManufacturedCountry"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="RecycledContent" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="RecycledContent"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="RecycledContentEvidenceType" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="RecycledContentEvidenceType"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="RecycledContentEvidenceReference" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="RecycledContentEvidenceReference"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Recyclability" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="Recyclability"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="RecyclabilitySource" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="RecyclabilitySource"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="RecyclabilityDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="RecyclabilityDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="PartOfMultipack" class="form-control" placeholder="optional" type="text">
+                        <label asp-for="PartOfMultipack"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="UpdateDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="UpdateDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ReleaseDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="ReleaseDate"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="DiscontinueDate" class="form-control datepicker" placeholder="optional" type="text">
+                        <label asp-for="DiscontinueDate"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-tertiary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

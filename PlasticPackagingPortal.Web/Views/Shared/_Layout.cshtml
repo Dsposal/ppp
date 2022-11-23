@@ -177,11 +177,14 @@
     </main>
     <footer class="footer pt-6 pb-5 bg-primary text-white">
         <div class="container">
-                
+                    
         </div>
     </footer>
+
     <link href="~/dist/js/main.css" rel="stylesheet" asp-append-version="true" />
-    <script src="~/dist/js/main.js" asp-append-version="true"></script>
+    <script src="~/dist/js/main.js" asp-append-version="true" defer></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

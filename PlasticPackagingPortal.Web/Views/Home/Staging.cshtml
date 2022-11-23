@@ -1,18 +1,19 @@
-﻿@model PlasticPackagingPortal.Web.Models.Generic.HomePageViewModel
+﻿@using PlasticPackagingPortal.Web.Models.Dto
+@model PlasticPackagingPortal.Web.Models.Generic.HomePageViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Complete Packages - Staging Area";
 }
 
 <div class="col-12">
     <div class="card card-body bg-white border-gray-300 mb-4">
         <div class="d-flex justify-content-between align-items-start mb-3">
-            <h2 class="h3 mb-4">Complete Packages</h2>
+            <h2 class="h3 mb-4">Complete Packages - Staging Area</h2>
             <div class="d-grid gap-2 d-md-block">
-                <a asp-action="Staging" asp-controller="Home" class="btn btn-gray-600"><i class="fas fa-tasks me-2"></i> Staging</a>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-success text-white"><i class="fas fa-check me-2"></i> Validated</a>
                 <partial name="_ImportModal" />
             </div>
         </div>
-        <table class="table table-hover w-100" id="packagesTable" data-type="validated" data-get="@Url.Action("OnTableLoad", "Home", new { typeId = (int)Model.Filter})" data-delete="@Url.Action("DeleteItem", "Home")">
+        <table class="table table-hover w-100" id="packagesTable" data-type="staging" data-get="@Url.Action("OnTableLoad", "Home", new { typeId = (int)Model.Filter})" data-finalise="@Url.Action("StagingItemToItem", "Home")" data-delete="@Url.Action("DeleteStagingItem", "Home")">
             <thead>
                 <tr>
                     <th>
@@ -21,16 +22,20 @@
                             <label class="visually-hidden" for="rowCheckboxSelectAll">Select all</label>
                         </div>
                     </th>
+
                     <th>Identifier</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Low code</th>
                     <th>Update date</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-
             </tbody>
         </table>
     </div>
 </div>
+
+<partial name="_EditModal" model="new StagingItemDto()"/>

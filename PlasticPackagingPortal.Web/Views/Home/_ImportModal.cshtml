@@ -1,0 +1,30 @@
+﻿
+<button class="btn btn-tertiary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasImportFile" aria-controls="offcanvasImportFile">
+    <span class="fas fa-file-import me-2"></span>Import
+</button>
+
+<!-- Modal -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasImportFile" aria-labelledby="offcanvasImportFileTitle">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasImportFileTitle">Import spreadsheet</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <p class="mb-5">
+            You can import your data by downloading the template and filling it in.
+            <a href="~/files/import_template_v1.xlsx" class="btn btn-link btn-sm text-underline">Download template</a>
+        </p>
+        <form id="importFileForm" enctype="multipart/form-data" method="post" asp-action="ImportFile" asp-antiforgery="true">
+            <div class="mb-3">
+                <label for="file" class="form-label">Import file</label>
+                <input class="form-control" type="file" name="file" id="file" accept=".xlsx" required>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        
+    </div>
+</div>
+<!-- End of Modal -->

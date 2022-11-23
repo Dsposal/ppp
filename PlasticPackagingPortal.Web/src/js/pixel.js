@@ -4,11 +4,21 @@ import Vivus from "vivus";
 import Headroom from "headroom.js";
 import noUiSlider from "nouislider";
 import SmoothScroll from "smooth-scroll";
-import 'datatables.net-bs5/css/dataTables.bootstrap5';
-import 'datatables.net-bs5';
-import '/node_modules/vanillajs-datepicker/sass/datepicker.scss';
 
-"use strict";
+import Choices from "choices.js"
+import Datepicker from 'vanillajs-datepicker/Datepicker';
+import { parse, format } from "date-fns"; 
+
+import "datatables.net";
+import "datatables.net-bs5";
+import 'datatables.net-bs5/css/dataTables.bootstrap5.css';
+import 'datatables.net-buttons';
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-buttons-bs5/css/buttons.bootstrap5.css';
+import 'jquery-validation';
+import Swal from 'sweetalert2'
+
+
 const d = document;
 d.addEventListener("DOMContentLoaded", function (event) {
 
@@ -219,11 +229,430 @@ d.addEventListener("DOMContentLoaded", function (event) {
     packagesTable();
 });
 
+async function finaliseDatatableButton(e, dt, node, config)
+{
+    const data = dt.rows().data().filter(x => x.selected).map(x => x.id).toArray();
+    if(data.length === 0) return;
+
+    const url = dt.table().node().dataset.finalise;
+    
+    try {
+        
+        Swal.fire({
+            title: 'Finalising items',
+            icon: 'info',
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        const request = await fetch(url, {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+        const response = await request.json();
+
+        if(response && response.redirect)
+            window.location.href = response.redirect;
+
+    } catch (e) {
+        Swal.fire({
+            title: 'Failed to update item',
+            text: e.message,
+            icon: 'error'
+        });
+    }
+
+}
+
+async function deleteDatatableButton(e, dt, node, config)
+{
+    const data = dt.rows().data().filter(x => x.selected).map(x => x.id).toArray();
+    if(data.length === 0) return;
+
+    const url = dt.table().node().dataset.delete;
+    
+    try {
+        
+        Swal.fire({
+            title: 'Deleting items',
+            icon: 'info',
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        const request = await fetch(url, {
+                    method: 'delete',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+        const response = await request.json();
+
+        dt.ajax.reload();
+        Swal.close();
+            
+
+    } catch (e) {
+        Swal.fire({
+            title: 'Failed to delete items',
+            text: e.message,
+            icon: 'error'
+        });
+    }
+
+}
+
+async function getStagingTableButtons() {
+    return [
+        {
+            text: 'Finalise',
+            className: 'btn-sm btn-success text-white',
+            action: finaliseDatatableButton
+        },
+        {
+            text: 'Delete',
+            className: 'btn-sm btn-danger',
+            action: deleteDatatableButton
+        }
+    ]
+}
+
+async function getValidatedTableButtons() {
+    return [
+        {
+            text: 'Delete',
+            className: 'btn-sm btn-danger',
+            action: deleteDatatableButton
+        }
+    ]
+}
+
+function getColumns() {
+    return [   
+            { 
+                name: 'select',
+                data: null,
+                searchable: false,
+                orderable: false,
+                render: function (data, type, row) {
+                    const checked = row.selected ? `checked="checked"` : '';
+                    return `
+                        <div class="form-check">
+                            <input class="form-check-input select-row" type="checkbox" id="rowCheckbox-${row.id}" ${checked}>
+                            <label class="visually-hidden" for="rowCheckbox-${row.id}">Select row</label>
+                        </div>`;
+                }
+            },
+            { data: 'identifier', name: 'identifier' },
+            { data: 'name', name: 'name' },
+            { data: 'description', name: 'description' },
+            { data: 'lowCode', name: 'lowCode' },
+            { 
+                name: 'updateDate',
+                data: 'updateDate', 
+                render: function (data, type, row) {
+                    try {
+                        const date = parse(data, 'dd/MM/yyyy', new Date());
+                        if(type === 'display')
+                            return data;
+                        else
+                            return format(date, 'T');
+                    } catch (e) {
+                        console.warn('Failed to prase ' + data + 'as date.');
+                        return null;
+                    }
+                }
+            },
+            { 
+                name: 'status',
+                data: null, 
+                render: function (data, type, row) {
+                    if(type === 'display')
+                    {
+                        const badge = row.errors ? `<span class="badge bg-danger">Validation errors</span>` : `<span class="badge bg-success">Validation passed</span>`;
+                        return `${badge}`;
+                    }
+                    else
+                        return row.errors ? 'errors' : null;
+                }
+            },
+            {
+                name: 'actions',
+                data: null,
+                searchable: false,
+                orderable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-secondary animate-up-2" data-bs-toggle="modal" data-bs-target="#editRowModal" data-id="${row.id}" type="button">Edit</button>
+                    `;
+                }
+            }
+        ];
+}
+
+function initialiseDatepickers(selector = 'input.datepicker'){
+
+    const datepickers = [];
+
+    [...document.querySelectorAll(selector)].forEach((input) => {
+        datepickers.push({
+            id: input.id,
+            instance: new Datepicker(input, {
+                format: 'dd/mm/yyyy'
+            })
+        });
+    });
+
+    return datepickers;
+}
+
+function toPascalCase (str){
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+async function editStagingItemForm(dt, modal){
+    const form = document.getElementById('editRowForm');
+
+    const validator = $(form).validate({
+        rules: {
+            Name: {
+                required: true
+            },
+            Height: {
+                number: true
+            },
+            HeightDate: {
+                date: true
+            },
+            Width: {
+                number: true
+            },
+            WidthDate: {
+                date: true
+            },
+            Depth: {
+                number: true
+            },
+            DepthDate: {
+                date: true
+            },
+            Volume: {
+                number: true
+            },
+            VolumeDate: {
+                date: true
+            },
+            Weight: {
+                number: true
+            },
+            WeightDate: {
+                date: true
+            },
+            PartOfMultipack: {
+                number: true,
+                min: 0,
+                max: 1,
+                step: 1
+            },
+            UpdateDate: {
+                date: true
+            },
+            ReleaseDate: {
+                date: true
+            },
+            DiscontinueDate: {
+                date: true
+            },
+        },
+        messages: {
+            
+        },
+        errorClass: 'is-invalid',
+        validClass: 'is-valid',
+        errorElement: "div",
+        errorPlacement: function ( error, element ) {
+            error.addClass( "invalid-feedback" );
+            error.insertAfter( element );
+        },
+        highlight: function(element) {
+            $(element).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        },
+        submitHandler: async function (form, e) {
+            e.preventDefault();
+
+            const data = new FormData(form);
+            const url = form.getAttribute('action');
+
+            try {
+                const request = await fetch(url, {
+                    method: 'post',
+                    body: data
+                });
+
+                const response = await request.json();
+
+                const row = dt.row('#' + response.id);
+                row.data(response);
+                row.invalidate();
+                modal.hide();
+
+                Swal.fire({
+                    title: 'Saved successfully',
+                    toast: true,
+                    icon: 'success',
+                    timer: 4000,
+                    position: 'bottom-end',
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
+                
+            } catch (e) {
+                Swal.fire({
+                    title: 'Failed to update item',
+                    icon: 'error'
+                });
+            }
+          
+
+            return false;
+        }
+    });
+}
+
 async function packagesTable() {
+    const tableEl = document.getElementById("packagesTable");    
+    
     if(document.getElementById("packagesTable"))
     {
-        const dt = $('#packagesTable').DataTable({
+        const datepickers = initialiseDatepickers();
+
+        const buttons = tableEl.dataset.type === 'staging' ? await getStagingTableButtons() : await getValidatedTableButtons();
+
+        const columns = getColumns();
+        
+        const dt = $(tableEl).DataTable({
+            dom: `<"row"<"col-12 col-lg-6"<"d-flex align-items-center"B>><"col-12 col-lg-6"<"d-flex justify-content-end align-items-center"f>>t<"my-3 small"i><"row"<"col-12 col-lg-6"<"d-flex align-items-center"l>><"col-12 col-lg-6"<"d-flex justify-content-end align-items-center"p>>>`,
+            
+            buttons: buttons,
+            language: {
+                lengthMenu: `  <div class="d-flex align-items-center">
+                                    <span class="me-1">Show</span>
+                                        <select class="form-select form-select-sm fmw-70">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="-1">All</option>
+                                        </select>
+                                    <span class="ms-1">items</span>
+                                </div>`
+                ,
+                search: '',
+                searchPlaceholder: 'Search items...',
+                infoEmpty: "No items",
+                info: "Showing _START_ to _END_ of _TOTAL_ items",
+                infoFiltered: "(filtered from _MAX_ total items)",
+                emptyTable: `<div class="d-flex justify-content-center">No items</span>`,
+            },
+            pagingType: 'numbers',
+            ajax: {
+                url: tableEl.dataset.get,
+                type: 'post'
+            },
+            columns: tableEl.dataset.type === 'validated' ? columns.filter((col) => { return col.name !== 'status'}).filter((col) => { return col.name !== 'actions' }) : columns,
             
         });
+
+        document.getElementById("rowCheckboxSelectAll").addEventListener("change", function (e) {
+            const _ = this;
+            dt.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    const data = this.data();
+                
+                    data.selected = _.checked;
+                    this.invalidate();
+            })
+            dt.draw(false);
+        })
+
+        tableEl.addEventListener('click', e => {
+            const { target } = e;
+            if (target.matches('.select-row')) {
+                const row = dt.row(target.closest('tr'));
+                const data = row.data();
+                data.selected = target.checked;
+                row.invalidate();
+
+                const allRowData = dt.rows().data();
+                const selectionRowData = allRowData.filter(r => r.selected === target.checked);
+                const rowCheckboxSelectAll = document.getElementById("rowCheckboxSelectAll");
+
+
+                if (allRowData.length === selectionRowData.length) {
+                    rowCheckboxSelectAll.checked = target.checked;
+                }
+                else
+                    rowCheckboxSelectAll.checked = false;
+
+                dt.draw(false);
+            }
+        });
+        const modalEl = document.getElementById("editRowModal");
+        if(modalEl)
+        {
+            
+            
+            const modal = new bootstrap.Modal(modalEl);
+            const form = modalEl.querySelector('form#editRowForm');
+            await editStagingItemForm(dt, modal);
+            modalEl.addEventListener("show.bs.modal", async (e) => {
+                const url = form.dataset.get;
+                const id = e.relatedTarget.dataset.id;
+
+                const response = await fetch(`${url}?id=${id}`, {
+                    method: 'get'
+                });
+
+                const data = await response.json();
+
+                if(data)
+                {
+                    for (const key in data) {
+                      if (data.hasOwnProperty(key)) {
+                          const input = document.getElementById(toPascalCase(key));
+                          if(!input) continue;
+                          
+                          try {
+                              if(input.classList.contains('datepicker')) {
+                                  
+                                  datepickers.find(i => i.id === input.id).instance.setDate(data[key]);
+                              }
+                              else {
+                                  input.value = data[key];
+                              } 
+                          } catch (e) {
+                              console.error("Could not set value for " + input.id, e);
+                          }                          
+                      }
+                    }
+                    $(form).valid();
+                }
+                
+            });
+        }
     }
 }

@@ -26,6 +26,13 @@
 }
 
 @for $nr from 1 to 40 {
+	.fmw-#{$nr*10} {
+		min-width: #{$nr*10}px !important;
+	}
+
+}
+
+@for $nr from 1 to 40 {
 	.fmw-#{$nr*50} {
 		min-width: #{$nr*50}px !important;
 	}

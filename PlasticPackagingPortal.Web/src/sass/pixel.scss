@@ -5,7 +5,8 @@
 @import "pixel/variables";
 @import "custom/variables";
 
-/*@import "node_modules/vanillajs-datepicker/sass/datepicker.scss";*/
+@import "choices.js/src/styles/choices.scss";
+@import '/node_modules/vanillajs-datepicker/sass/datepicker.scss';
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
@@ -51,3 +52,4 @@
 @import "pixel/utilities";
 @import "pixel/layout";
 @import "pixel/components";
+
