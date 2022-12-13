@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core application to Web App packasaurus-rex
+name: Packasaurus Rex CD/CI
 on:
   push:
     branches:
